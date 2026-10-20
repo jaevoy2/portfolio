@@ -77,6 +77,7 @@ function App() {
             {!isTouch && (
               <SplashCursor
                 style={{ zIndex: 100 }}
+                
                 rainbow={true}
                 size={1}
                 force={1}
