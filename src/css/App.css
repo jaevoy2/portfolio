@@ -801,6 +801,13 @@ div[id] {
         background: #fff;
         border: 1px solid #e9e9e9;
     }
+    /* ABOUT / ME: stack tightly (both lines share one font size) */
+    .aboutBigText {
+        top: 4%;
+    }
+    .aboutOutlineText {
+        top: calc(4% + 0.9em);
+    }
     .aboutIntro {
         font-size: 15px;
     }
