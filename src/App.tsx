@@ -57,7 +57,7 @@ function App() {
 
             <SplashCursor
               style={{ zIndex: 100 }}
-              rainbow={false}
+              rainbow={true}
               size={1}
               force={1}
               swirl={3}
