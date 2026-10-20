@@ -31,7 +31,7 @@ const projects = [
 
 function ProjectSection() {
     return (
-        <div style={{ paddingRight: '12%', paddingLeft: '12%', marginTop: 100 }}>
+        <div className="sectionPad projectsSec">
             <Reveal
                 direction='right'
                 duration={0.9}
@@ -40,16 +40,9 @@ function ProjectSection() {
                     FEATURED PROJECTS
                 </h6>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <h6 className='globalFont' style={{ color: '#212529', fontSize: 24, fontWeight: 500, }}>
-                        Some of My Recent Works
-                    </h6>
-
-                    {/* <a href="#" className='globalFont' style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', color: '#37BC7D', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
-                        View All Projects
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#37BC7D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-right"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l14 0" /><path d="M15 16l4 -4" /><path d="M15 8l4 4" /></svg>
-                    </a> */}
-                </div>
+                <h6 className='globalFont sectionTitle'>
+                    Some of My Recent Works
+                </h6>
             </Reveal>
 
             <Reveal
@@ -57,7 +50,8 @@ function ProjectSection() {
                 delay={0.2}
                 duration={5}
             >
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 30 }}>
+                {/* 3 columns -> 2 -> 1 (see .projectGrid in App.css) */}
+                <div className="projectGrid">
                     {projects.map((project, i) => (
                         <Card
                             key={project.id}

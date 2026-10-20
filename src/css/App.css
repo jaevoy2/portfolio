@@ -12,6 +12,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/* `clip` (not `hidden`) stops sideways scroll without breaking the sticky header */
+html,
+body {
+  overflow-x: clip;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
 section[id],
 div[id] {
   scroll-margin-top: 100px;
@@ -27,6 +40,14 @@ div[id] {
   will-change: transform, opacity;
 }
 
+/* Replaces the inline style that was on the Threads wrapper in App.tsx */
+.threads-wrap {
+  width: 100%;
+  height: clamp(380px, 75vh, 600px);
+  position: relative;
+  top: 80px;
+}
+
 @keyframes section-out {
   to { opacity: 0; transform: translate3d(0, -60px, 0); }
 }
@@ -36,9 +57,11 @@ div[id] {
     margin: 0;
     background-color: #fff;
     padding-bottom: 50px;
+    overflow-x: clip;
 }
 
 .floatCon {
+  display: flex;
   flex-direction: column;
   align-items: center;
   position: fixed;
@@ -55,7 +78,7 @@ div[id] {
   align-items: center;
   justify-content: center;
   background-color: #120F17;
-  margin-bottom: 10px;  
+  margin-bottom: 10px;
 }
 
 .threads-container {
@@ -76,6 +99,7 @@ div[id] {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
     background-color: #fff;
     z-index: 100;
 }
@@ -87,6 +111,7 @@ div[id] {
     list-style: none;
     justify-content: space-between;
     width: 500px;
+    max-width: 100%;
     align-self: center;
 }
 
@@ -126,7 +151,7 @@ div[id] {
 }
 
 .contactNav {
-    font-size: 15px,;
+    font-size: 15px;
     color: #f8f9fa;
     text-decoration: none;
     font-family: "Poppins", sans-serif;
@@ -140,12 +165,16 @@ div[id] {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: max-content;
+    max-width: 92%;
+    text-align: center;
 }
 .headerName {
     font-family: "Poppins", sans-serif;
     color: #212529;
     font-weight: 700;
-    font-size: 70px;
+    font-size: clamp(28px, 8.5vw, 70px);
+    line-height: 1.1;
 }
 
 
@@ -162,7 +191,7 @@ div[id] {
 
 .focus-word {
   position: relative;
-  font-size: 18px;
+  font-size: clamp(14px, 2.4vw, 18px);
   font-family: "Poppins", sans-serif;
   color: #212529;
   font-weight: 600;
@@ -236,8 +265,6 @@ div[id] {
     overflow: hidden;
 }
 
-
-
 .card-image-wrapper {
     width: 100%;
     height: 200px;
@@ -259,7 +286,7 @@ div[id] {
 
 .cardcontent {
     padding: 16px 18px 20px;
-    border-top: 1px solid #e9e9e9 ;
+    border-top: 1px solid #e9e9e9;
 }
 
 .cardtitle {
@@ -382,7 +409,7 @@ div[id] {
     inset 0 0 3px 0 var(--glow-color-50, hsl(40deg 80% 80% / 50%)),
     inset 0 0 6px 0 var(--glow-color-40, hsl(40deg 80% 80% / 40%)),
     inset 0 0 15px 0 var(--glow-color-30, hsl(40deg 80% 80% / 30%)),
-    inset 0 0 25px 2px var(--glow-color-20, hsl(40deg 80% 80% / 20%)),
+    inset 0 0 25px 2px var(--glow-color-20, hsl(40deg 80% 80% / 20%));
 }
 
 @keyframes border-glow-sweep {
@@ -515,7 +542,6 @@ div[id] {
     position: relative;
     height: clamp(520px, 62vw, 800px);
     overflow: hidden;
-    /* border-bottom: 1px solid #e9e9e9; */
 }
 
 .aboutLabel {
@@ -583,7 +609,7 @@ div[id] {
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
-    width: '80%';
+    width: 100%;
 }
 
 .aboutSkillandToolsList {
@@ -603,7 +629,13 @@ div[id] {
 
 .aboutLabelCon {
   position: relative;
-  height: 800px;
+  height: 100%;
+}
+
+/* wraps the big ABOUT / ME text + photo so they stack as one unit on mobile */
+.aboutVisual {
+  position: relative;
+  height: 100%;
 }
 
 .aboutBigText,
@@ -620,13 +652,13 @@ div[id] {
 
 .aboutBigText {
     top: 14%;
-    font-size: clamp(80px, 15vw, 260px);
+    font-size: clamp(56px, 15vw, 260px);
     color: #212529;
 }
 
 .aboutOutlineText {
     top: 40%;
-    font-size: clamp(80px, 15vw, 260px);
+    font-size: clamp(56px, 15vw, 260px);
     color: transparent;
     -webkit-text-stroke: 1.5px #37BC7D;
 }
@@ -640,6 +672,7 @@ div[id] {
     z-index: 2;
     height: 78%;
     width: auto;
+    max-width: 100%;
     -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
     pointer-events: none;
@@ -678,21 +711,280 @@ div[id] {
   stroke: #37BC7D;
 }
 
-@media (max-width: 768px) {
+
+/* ==========================================================
+   RESPONSIVE
+   Desktop-first: each block overrides the styles above.
+   ========================================================== */
+
+/* Large tablet / small laptop */
+@media (max-width: 1024px) {
+    .headerCon {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+    .navCon {
+        width: 380px;
+    }
     .aboutCon {
         padding: 0 6%;
+        margin-top: 100px;
+    }
+    .aboutBody {
+        gap: 24px 40px;
+    }
+    .aboutRightSec {
+        width: min(340px, 36%);
+    }
+}
+
+/* Tablet / large phone */
+@media (max-width: 768px) {
+    section[id],
+    div[id] {
+        scroll-margin-top: 80px;
+    }
+
+    .headerCon {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    .navCon {
+        width: auto;
+        gap: 16px;
+    }
+    .navs,
+    .contactNav {
+        font-size: 13px;
+    }
+
+    .floatCon {
+        right: 16px;
+        bottom: 24px;
+    }
+    .floatBtn {
+        height: 44px;
+        width: 44px;
+    }
+
+    .topbodyCon {
+        left: 50%;
+        max-width: 90%;
+    }
+
+    /* About: stack the hero instead of overlapping the card on the photo */
+    .aboutCon {
+        padding: 0 5%;
+        margin-top: 80px;
+    }
+    .aboutHero {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        overflow: visible;
+    }
+    .aboutVisual {
+        order: 1;
+        height: clamp(380px, 90vw, 560px);
+        overflow: hidden;
+    }
+    .aboutRightSec {
+        order: 2;
+    }
+    .aboutRightSec {
+        position: relative;
+        inset: auto;
+        margin: 0;
+        width: 100%;
+        height: auto;
+        background: #fff;
+        border: 1px solid #e9e9e9;
     }
     .aboutIntro {
-        top: auto;
-        bottom: 16px;
-        left: 0;
-        right: 0;
-        margin: 0;
-        width: auto;
-        font-size: 12px;
-        padding: 16px;
+        font-size: 15px;
+    }
+    .aboutSkillandToolsCon {
+        width: 100%;
     }
     .aboutBody {
         grid-template-columns: 1fr;
+        gap: 16px;
+        padding-top: 24px;
     }
+}
+
+/* Phone */
+@media (max-width: 560px) {
+    /* Nav links don't fit next to the logo + contact button.
+       Add a hamburger menu in Header.tsx if you want them back on mobile. */
+    .navCon {
+        display: none;
+    }
+    .headerCon {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .card {
+        max-width: 100%;
+    }
+    .card-image-wrapper {
+        height: 180px;
+    }
+
+    .aboutSkillandToolsList {
+        font-size: 12px;
+    }
+    .aboutRightBotContainer:hover,
+    .aboutSkillandToolsList:hover {
+        transform: none;
+    }
+}
+
+/* Touch devices: skip hover-only scale effects that "stick" after a tap */
+@media (hover: none) {
+    .contactBtn:hover,
+    .dlCVBtn:hover,
+    .serviceCon:hover,
+    .cardServiceCon:hover .serviceIconCon,
+    .card:hover .cardimage {
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* ==========================================================
+   SECTION LAYOUTS (Projects, Services)
+   ========================================================== */
+
+.sectionPad {
+    padding-left: 12%;
+    padding-right: 12%;
+}
+
+.projectsSec { margin-top: 100px; }
+
+.sectionTitle {
+    color: #212529;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.projectGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 320px));
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 30px;
+}
+
+.serviceSec { margin-top: 300px; }
+
+.serviceRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.serviceList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 30px;
+    width: 50%;
+}
+
+.serviceItem { width: 90%; }
+
+.serviceCardInner {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.serviceMock {
+    width: 30%;
+    padding-left: 40px;
+    position: relative;
+    height: 450px;
+}
+
+.mockA { position: absolute; top: -20px; left: -200px; z-index: 8; }
+.mockB { position: absolute; top: 50px; right: -100px; z-index: 10; }
+
+.mockImg {
+    width: 450px;
+    height: 450px;
+    display: block;
+}
+
+@media (max-width: 1100px) {
+    .projectGrid {
+        grid-template-columns: repeat(2, minmax(0, 320px));
+        justify-content: center;
+    }
+    .mockA { left: -140px; }
+    .mockB { right: -60px; }
+    .mockImg { width: 360px; height: 360px; }
+    .serviceMock { height: 380px; }
+}
+
+@media (max-width: 1024px) {
+    .sectionPad { padding-left: 6%; padding-right: 6%; }
+    .serviceSec { margin-top: 200px; }
+}
+
+@media (max-width: 860px) {
+    .serviceRow {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .serviceList { width: 100%; }
+    .serviceItem { width: 100%; }
+
+    /* mockups sit under the cards, side by side */
+    .serviceMock {
+        width: 100%;
+        padding-left: 0;
+        height: clamp(240px, 62vw, 380px);
+        margin-top: 24px;
+    }
+    .mockA { top: 0; left: 0; }
+    .mockB { top: 20px; right: 0; }
+    .mockImg {
+        width: clamp(200px, 55vw, 340px);
+        height: clamp(200px, 55vw, 340px);
+    }
+}
+
+@media (max-width: 768px) {
+    .sectionPad { padding-left: 5%; padding-right: 5%; }
+    .projectsSec { margin-top: 60px; }
+    .serviceSec { margin-top: 120px; }
+    .sectionTitle { font-size: 20px; }
+}
+
+@media (max-width: 560px) {
+    .projectGrid {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+    }
+    .serviceCardInner { gap: 14px; padding: 16px; }
+    .serviceIconCon { width: 48px; height: 48px; flex-shrink: 0; }
 }

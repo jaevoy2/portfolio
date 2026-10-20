@@ -16,8 +16,26 @@ import SplashCursor from "./components/splushCursor"
 import './css/App.css'
 
 
+// True on touch-only devices (phones/tablets), where a mouse-following fluid cursor makes no sense
+function useIsTouch() {
+  const [isTouch, setIsTouch] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(pointer: coarse)');
+    const onChange = (e: MediaQueryListEvent) => setIsTouch(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  return isTouch;
+}
+
+
 function App() {
   const [loaded, setLoaded] = useState(false);
+  const isTouch = useIsTouch();
 
   useEffect(() => {
     const root = document.documentElement;
@@ -54,36 +72,38 @@ function App() {
           <>
             <Header />
             <FloatingIcon />
-          
-            <SplashCursor
-              style={{ zIndex: 100 }}
-              rainbow={false}
-              size={1}
-              force={1}
-              swirl={3}
-              trail={1}
-              clickSplash
-              colorSpeed={1}
-              intensity={1}
-              momentum={1}
-              shading={1}
-              glow={0}
-              quality="high"
-              intro
-              contained={false}
-            />
 
+            {/* Heavy WebGL effect: desktop/mouse only */}
+            {!isTouch && (
+              <SplashCursor
+                style={{ zIndex: 100 }}
+                rainbow={true}
+                size={1}
+                force={1}
+                swirl={3}
+                trail={1}
+                clickSplash
+                colorSpeed={1}
+                intensity={1}
+                momentum={1}
+                shading={1}
+                glow={0}
+                quality="high"
+                intro
+                contained={false}
+              />
+            )}
           </>
         )}
 
         <section id="home">
           <div style={{ position: 'relative' }} className="hero-wrap">
-              <div style={{ width: '100%', height: '600px', position: 'relative', top: 80 }}>
+              <div className="threads-wrap">
                 <Threads
                   color={[0, 0, 0]}
                   amplitude={1.5}
                   distance={0}
-                  enableMouseInteraction
+                  enableMouseInteraction={!isTouch}
                   />
               </div>
               {loaded && <HeroSection />}

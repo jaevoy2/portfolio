@@ -62,12 +62,14 @@ const TimelineItem = ({
     <Reveal direction={isLeft ? "right" : "left"} delay={index * 0.2}>
       <div
         ref={titleRef}
-        className="grid grid-cols-1 md:grid-cols-2 md:pt-5 md:gap-10"
+        className="grid grid-cols-1 md:grid-cols-2 pb-10 md:pb-0 md:pt-5 md:gap-10"
       >
-        {/* Content column */}
+        {/* Content column.
+            Mobile: always shown, left-aligned, indented (pl-16) to clear the line at left-8.
+            md+: alternates left/right of the centered line. */}
         <div
-          className={`hidden md:block md:row-start-1 px-4 ${
-            !isLeft ? "md:col-start-2 text-left" : "md:col-start-1 text-right"
+          className={`block pl-16 pr-4 text-left md:row-start-1 md:px-4 ${
+            !isLeft ? "md:col-start-2 md:text-left" : "md:col-start-1 md:text-right"
           }`}
         >
           <h4
@@ -88,12 +90,16 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
 
+  // Re-measure when the content height changes (e.g. text wrapping on narrow screens)
   useEffect(() => {
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      setHeight(rect.height);
-    }
-  }, [ref]);
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setHeight(el.getBoundingClientRect().height);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -113,10 +119,10 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
         delay={0.1}
       >
         <div className="flex gap-4 max-w-7xl mx-auto pt-20 pb-15 px-4 place-content-center md:px-8 lg:px-10">
-          <h2 className="text-lg md:text-4xl mb-4 text-black max-w-4xl">
+          <h2 className="text-2xl md:text-4xl mb-4 text-black max-w-4xl">
             My
           </h2>
-          <h2 style={{ color: '#37BC7D' }} className="text-lg md:text-4xl mb-4 max-w-4xl">
+          <h2 style={{ color: '#37BC7D' }} className="text-2xl md:text-4xl mb-4 max-w-4xl">
             Experience
           </h2>
         </div>
@@ -166,4 +172,3 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
     </div>
   );
 };
-
