@@ -36,6 +36,7 @@ function AboutSection() {
                                     <ul className='aboutSkillandToolsCon'>
                                         <li className='globalFont aboutSkillandToolsList'>HTML & CSS</li>
                                         <li className='globalFont aboutSkillandToolsList'>JavaScript</li>
+                                        <li className='globalFont aboutSkillandToolsList'>TypeScript</li>
                                         <li className='globalFont aboutSkillandToolsList'>Bootstrap</li>
                                         <li className='globalFont aboutSkillandToolsList'>React</li>
                                         <li className='globalFont aboutSkillandToolsList'>React Native</li>
